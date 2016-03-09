@@ -4,3 +4,4 @@ bower_components
 *.user
 wwwroot
 src/Hudl.BugBounty.WebApp/Scripts/**/*.js
+typings

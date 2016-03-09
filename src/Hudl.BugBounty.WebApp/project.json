@@ -23,7 +23,8 @@
 
   "exclude": [
     "wwwroot",
-    "node_modules"
+    "node_modules",
+    "typings"
   ],
   "publishExclude": [
     "**.user",

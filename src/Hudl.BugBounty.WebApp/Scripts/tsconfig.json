@@ -4,7 +4,10 @@
     "noEmitOnError": true,
     "removeComments": false,
     "sourceMap": true,
-    "target": "es5"
+    "target": "es5",
+    "module": "commonjs",
+    "outDir": "../wwwroot/scripts",
+    "jsx": "react"
   },
   "exclude": [
     "node_modules",
