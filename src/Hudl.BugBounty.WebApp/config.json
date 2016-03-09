@@ -2,6 +2,9 @@
   "DatabaseSettings": {
     "Host": "hostname",
     "Port": 1000,
-    "Database" :  "BugBounty"  
+    "Database": "BugBounty"
+  },
+  "LoggerSettings": {
+    "Level": "Information"
   }
 }

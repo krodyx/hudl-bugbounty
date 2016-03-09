@@ -1,9 +1,12 @@
-﻿using Hudl.BugBounty.WebApp.Options;
+﻿using System;
+using Hudl.BugBounty.WebApp.Options;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
 using Microsoft.AspNet.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.OptionsModel;
 using Microsoft.Extensions.PlatformAbstractions;
 
 namespace Hudl.BugBounty.WebApp
@@ -18,6 +21,7 @@ namespace Hudl.BugBounty.WebApp
                 .AddJsonFile("config.json")
                 .AddJsonFile($"config.{env.EnvironmentName}.json", optional: true) // The values in here override the values in config.json if they exist
                 .AddEnvironmentVariables("DatabaseSettings:") // Get additional database settings from environment variables e.g. Username and Password since we don't want these in config.
+                .AddEnvironmentVariables("LoggerSettings:") // In case we want to override the level on the fly
                 .Build();
         }
 
@@ -27,15 +31,21 @@ namespace Hudl.BugBounty.WebApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddOptions(); //Enable configuration options
-            services.Configure<DatabaseSettings>(Configuration); // Get the DatabaseSettings from configuration
+            services.Configure<DatabaseSettings>(Configuration.GetSection("DatabaseSettings")); // Get the DatabaseSettings from configuration
+            services.Configure<LoggerSettings>(Configuration.GetSection("LoggerSettings"));
 
             services.AddMvc();
         }
 
         
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app)
+        public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory, IOptions<LoggerSettings> loggerSettings)
         {
+            var configuredLogLevel = loggerSettings.Value != null ? loggerSettings.Value.Level : "Information";
+            LogLevel level;
+            if(!Enum.TryParse(configuredLogLevel, out level))level = LogLevel.Information;
+            loggerFactory.AddConsole(minLevel: level);
+
             app.UseMvcWithDefaultRoute();
             app.UseStaticFiles();
         }

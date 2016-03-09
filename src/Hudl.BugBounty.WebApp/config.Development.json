@@ -3,5 +3,8 @@
     "Host": "localhost",
     "Port": 1000,
     "Database": "BugBounty"
+  },
+  "LoggerSettings": {
+    "Level": "Debug" 
   }
 }
