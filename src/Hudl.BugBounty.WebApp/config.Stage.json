@@ -1,0 +1,7 @@
+﻿{
+  "DatabaseSettings": {
+    "Host": "stage",
+    "Port": 1000,
+    "Database": "BugBounty"
+  }
+}
