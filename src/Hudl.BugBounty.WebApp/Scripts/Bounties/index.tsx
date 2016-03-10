@@ -16,6 +16,7 @@ module BountyBoard {
         signature: string;
         serviceName: string;
         description: string;
+        value: number;
         assigned: boolean;
    }
 
@@ -23,17 +24,17 @@ module BountyBoard {
     model: IBountyBoardItem;
    }
 
-   export interface IBountyBoardColumnModel {
+   export interface IBountyBoardModel {
         bountyBoardItems: Array<IBountyBoardItem>;
    }
 
-   export interface IBountyBoardColumnState {
+   export interface IBountyBoardState {
         isVisible: boolean;
    }
 
-   export interface IBountyBoardColumnProps {
+   export interface IBountyBoardProps {
         Title: string;
-        model: IBountyBoardColumnModel;
+        model: IBountyBoardModel;
    }
 
    export class BountyBoardItem implements IBountyBoardItem {
@@ -44,6 +45,7 @@ module BountyBoard {
         private _signature: string;
         private _serviceName: string;
         private _description: string;
+        private _value: number;
         private _assigned: boolean;
 
         get id() {
@@ -70,11 +72,16 @@ module BountyBoard {
             return this._assigned;
         }
 
-        constructor(position: number, signature: string, serviceName: string, description: string) {
+        get value(){
+            return this._value;
+        }
+
+        constructor(position: number, signature: string, serviceName: string, description: string, value: number) {
             this._position = position;
             this._signature = signature;
             this._serviceName = serviceName;
             this._description = description;
+            this._value = value;
         }
     }
 
@@ -87,15 +94,16 @@ module BountyBoard {
         public render() {
             return (<div className="bountyboard-item-container">
                 <div className="bountyboard-item-position">Pos: {this.props.model.position}</div>
-                <div className="bountyboard-item-squad-signature">Signature: {this.props.model.signature}</div>
-                <div className="bountyboard-item-squad-serviceName">Service: {this.props.model.serviceName}</div>
-                <div className="bountyboard-item-points-description">Description: {this.props.model.description}</div>
+                <div className="bountyboard-item-signature">Signature: {this.props.model.signature}</div>
+                <div className="bountyboard-item-serviceName">Service: {this.props.model.serviceName}</div>
+                <div className="bountyboard-item-description">Description: {this.props.model.description}</div>
+                <div className="bountyboard-item-value">Value: {this.props.model.value}</div>
                 </div>
                 );
         }
     }
 
-    export class BountyBoardColumnModel implements IBountyBoardColumnModel {
+    export class BountyBoardModel implements IBountyBoardModel {
         private _bountyBoardItems: Array<IBountyBoardItem>;
         get bountyBoardItems() {
             return this._bountyBoardItems;
@@ -106,8 +114,8 @@ module BountyBoard {
         }
     }
 
-      export class BountyBoardColumnComponent extends React.Component<IBountyBoardColumnProps, {}>{
-        constructor(props: IBountyBoardColumnProps) {
+      export class BountyBoardComponent extends React.Component<IBountyBoardProps, {}>{
+        constructor(props: IBountyBoardProps) {
             super(props);
         }
 
@@ -117,9 +125,9 @@ module BountyBoard {
                             <BountyBoardItemComponent model={i} />
                         </li>);
             });
-            return (<div className="bountyboard-column-container">
-                        <div className="bountyboard-column-header">
-                            <span className="bountyboard-column-header-title">{this.props.Title}</span>
+            return (<div className="bountyboard-container">
+                        <div className="bountyboard-header">
+                            <span className="bountyboard-header-title">{this.props.Title}</span>
                             </div>
                         <ul>
                             {allBounties}
@@ -129,11 +137,12 @@ module BountyBoard {
     }
 }
 
-var bountyBoardItem1 = new BountyBoard.BountyBoardItem(1, "A12345", "Alpha", "Something went wrong");
 var array = new Array<BountyBoard.IBountyBoardItem>();
-array.push(bountyBoardItem1);
-var bountyboardItems = new BountyBoard.BountyBoardColumnModel(array);
+var bountyBoardItem = new BountyBoard.BountyBoardItem(1, "A12345", "Alpha", "Something went wrong", 850);
+array.push(bountyBoardItem);
 
-var App = BountyBoard.BountyBoardColumnComponent;
+var bountyboardItems = new BountyBoard.BountyBoardModel(array);
+
+var App = BountyBoard.BountyBoardComponent;
 
 ReactDOM.render(<App Title='Top Bounties' model={bountyboardItems} />, document.getElementById('content')); 
