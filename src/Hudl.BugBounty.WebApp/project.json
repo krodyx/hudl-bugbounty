@@ -35,6 +35,9 @@
       "npm install",
       "bower install"
     ],
+    "postbuild": [
+      "gulp bulid"
+    ],
     "prepublish": [
       "npm install",
       "bower install",

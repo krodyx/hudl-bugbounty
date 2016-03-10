@@ -2,7 +2,8 @@
   "name": "hudl-bugbounty",
   "homepage": "https://github.com/lewislabs/hudl-bugbounty",
   "authors": [
-    "Christopher Lewis <chris.lewis@hudl.com>"
+    "Christopher Lewis <chris.lewis@hudl.com>",
+    "Logan Laughlin <logan.laughlin@hudl.com>"
   ],
   "description": "Hunting bugs, not skunks.",
   "main": "",
@@ -17,6 +18,5 @@
     "tests"
   ],
   "dependencies": {
-    "react": "~0.14.7"
   }
 }
