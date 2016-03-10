@@ -4,9 +4,11 @@ bower_components
 *.user
 wwwroot
 src/Hudl.BugBounty.WebApp/Scripts/**/*.js
+src/Hudl.BugBounty.WebApp/project.lock.json
 typings
 env/
 credentials.json
 .idea/
 sumo-output*.json
-src/Hudl.BugBounty.WebApp/project.lock.json
+# Mac DSStore
+.DS_Store
