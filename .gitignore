@@ -9,3 +9,6 @@ env/
 credentials.json
 .idea/
 sumo-output*.json
+
+# Mac DSStore
+.DS_Store
