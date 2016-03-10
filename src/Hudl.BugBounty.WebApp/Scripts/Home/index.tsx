@@ -192,5 +192,7 @@ startOfWeek.setDate(startOfWeek.getDate() - dayOfWeek);
 var leaderboardItems = new Leaderboard.LeaderboardColumnModel(array, startOfWeek, "This Week");
 
 var App = Leaderboard.LeaderboardColumnComponent;
-
-ReactDOM.render(<App model={leaderboardItems} bountiesUrl='/home/getbounties' />, document.getElementById('content')); 
+var homeElem = document.getElementById('home-content');
+if(homeElem){
+    ReactDOM.render(<App model={leaderboardItems} bountiesUrl='/home/getbounties' />, homeElem); 
+}

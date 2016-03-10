@@ -155,4 +155,8 @@ var bountyboardItems = new BountyBoard.BountyBoardModel(array);
 
 var App = BountyBoard.BountyBoardComponent;
 
-ReactDOM.render(<App Title='Top Bounties' model={bountyboardItems} />, document.getElementById('content')); 
+var bountiesElem = document.getElementById('bounties-content');
+if(bountiesElem){
+    ReactDOM.render(<App Title='Top Bounties' model={bountyboardItems} />, bountiesElem); 
+}
+
