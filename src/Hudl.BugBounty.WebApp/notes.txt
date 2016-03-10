@@ -1,0 +1,7 @@
+
+Ran into an issue during `dnx web`: 
+fail: Microsoft.AspNet.Server.Kestrel[13]
+      An unhandled exception was thrown by the application.
+      System.IO.IOException: kqueue() FileSystemWatcher has reached the maximum number of files to watch.
+
+Ran `export MONO_MANAGED_WATCHER=false`, fixed it
