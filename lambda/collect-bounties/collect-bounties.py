@@ -14,11 +14,13 @@ logger.setLevel(logging.INFO)
 valid_signatures = []
 print('Loading function')
 
-github_token = '4485643f038ae74faa9459e3cc7aea88469b334e'
+github_token = '' 
+
 database_server = 's-bountyhunt-mongo-rs1-use1c-01.external.app.staghudl.com:27017'
 security_group = ''
 
 def lambda_handler(event, context):
+    logger.debug("Received event: " + json.dumps(event, indent=2))
     request_pr = Pull_Request(json.dumps(event, indent=2))
  
     pr_number = request_pr.number
@@ -68,7 +70,6 @@ def lambda_handler(event, context):
         pr_number=pr_number)
 
     pr_merged_at = pr.merged_at
-    pr_merged_at = datetime.datetime.now()
 
     for commit in commits:
         commit_message = commit.commit.message
@@ -84,7 +85,6 @@ def lambda_handler(event, context):
     for signature_repaired in signatures_repaired:
         logger.info(' - ' + signature_repaired)
         insert_bounty(squad_name, signature_repaired, 1, pr_url, pr_merged_at)
-
 
 def find_signatures(text):
     found_signatures = []
