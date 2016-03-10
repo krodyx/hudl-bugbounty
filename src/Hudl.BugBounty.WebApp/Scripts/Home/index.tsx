@@ -95,15 +95,15 @@ module Leaderboard {
 
         public render() {
             return (<div className="leaderboard-item-container">
-                        <span className="leaderboard-item-position">{this.props.model.position}</span>
-                        <span className="leaderboard-item-squad-image"><a href={this.props.model.squadImageUrl}></a></span>
+                        <span className="leaderboard-item-position">Pos: {this.props.model.position}</span>
+                        <div className="leaderboard-item-squad-image">Image: <img src={this.props.model.squadImageUrl}></img></div>
                         <span className="leaderboard-item-squad">
-                            <div className="leaderboard-item-squad-squadname">{this.props.model.squadName}</div>
-                            <div className="leaderboard-item-squad-alltimepoints">{this.props.model.alltimePoints}</div>
+                            <div className="leaderboard-item-squad-squadname">Name: {this.props.model.squadName}</div>
+                            <div className="leaderboard-item-squad-alltimepoints">AllPoints: {this.props.model.alltimePoints}</div>
                         </span>
                         <span className="leaderboard-item-points">
-                            <div className="leaderboard-item-points-timeframepoints">{this.props.model.timeframePoints}</div>
-                            <div className="leaderboard-item-points-change">{this.props.model.daysChange}</div>
+                            <div className="leaderboard-item-points-timeframepoints">Points: {this.props.model.timeframePoints}</div>
+                            <div className="leaderboard-item-points-change">Change: {this.props.model.daysChange}</div>
                         </span>
                     </div>);
         }
@@ -131,7 +131,10 @@ module Leaderboard {
                             <LeaderboardItemComponent model={i} />
                         </li>);
             });
-            return (<div className="leaderboard-column-container">
+            return (<div>
+                    <a href="bounties">Bounty List</a>
+                
+                <div className="leaderboard-column-container">
                         <div className="leaderboard-column-header">
                             <span className="leaderboard-column-header-title">{this.props.Title}</span>
                             <span className="leaderboard-column-header-endDate">{this.props.EndDate}</span>
@@ -139,6 +142,7 @@ module Leaderboard {
                         <ul>
                             {allLeaders}
                         </ul>
+                    </div>
                     </div>);
         }
     }

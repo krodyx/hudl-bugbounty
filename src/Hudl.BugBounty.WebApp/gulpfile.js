@@ -34,17 +34,23 @@ var shell = function(cmd) {
 }
 
 gulp.task("install", function(cb) {
-    shell('npm install -g browserify bower tsd typescript && tsd install');
+    shell("npm install -g browserify bower tsd typescript && tsd install");
 });
 
+var buildTS = function(rootDir){
+    return shell("tsc -p Scripts/" + rootDir + 
+        " && browserify wwwroot/scripts/" + rootDir + "/index.js "
+     + "-o wwwroot/scripts/" + rootDir + "/bundle.js"); 
+}
 
 gulp.task("build:js", function(cb) {
-    return shell('tsc -p Scripts/Home && echo 1 && echo 2 && browserify wwwroot/scripts/home/index.js -o wwwroot/scripts/home/bundle.js'); //Home compile
+    buildTS('home')
+    buildTS('bounties')
 });
 
 
 gulp.task("build:css", function () {
-    return gulp.src('Styles/Home/**/*.scss')
+    return gulp.src(paths.sass)
         .pipe(plumber())
         .pipe(sass.sync().on('error', sass.logError))
         .pipe(gulp.dest('wwwroot/css')); //we should get this minified and bundled into one file
@@ -54,6 +60,7 @@ gulp.task("build", ["build:js", "build:css"]);
 
 gulp.task('watch', function(cb) {
     gulp.watch([paths.ts, paths.tsx], ['build:js']);
+    gulp.watch([paths.sass], ['build:css']);
 });
 
 gulp.task("clean:js", function (cb) {
