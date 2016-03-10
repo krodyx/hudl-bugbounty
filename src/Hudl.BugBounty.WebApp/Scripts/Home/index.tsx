@@ -31,11 +31,11 @@ module Leaderboard {
         title: string;
     }
 
-    export interface ILeaderboardColumnState {
+    export interface ILeaderboardColumnState { 
         isShowing: boolean;
     }
 
-    export interface ILeaderboardColumnProps {
+    export interface ILeaderboardColumnProps { 
         model: ILeaderboardColumnModel;
         bountiesUrl: string;
     }

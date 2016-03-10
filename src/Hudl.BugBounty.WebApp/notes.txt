@@ -5,3 +5,5 @@ fail: Microsoft.AspNet.Server.Kestrel[13]
       System.IO.IOException: kqueue() FileSystemWatcher has reached the maximum number of files to watch.
 
 Ran `export MONO_MANAGED_WATCHER=false`, fixed it
+
+run `npm install --save-dev <package>` to install package and save to package.json
