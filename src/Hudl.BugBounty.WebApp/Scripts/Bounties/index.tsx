@@ -4,8 +4,10 @@
 
 /// <reference path="../../typings/react/react.d.ts" />
 /// <reference path="../../typings/react/react-dom.d.ts" />
+/// <reference path="../../typings/classnames/classnames.d.ts" />
 import React =  require('react');
 import ReactDOM = require('react-dom');
+import cx = require('classnames');
 
 module BountyBoard {
    
@@ -21,7 +23,7 @@ module BountyBoard {
    }
 
    export interface IBountyBoardItemProps {
-    model: IBountyBoardItem;
+        model: IBountyBoardItem;
    }
 
    export interface IBountyBoardModel {
@@ -75,7 +77,7 @@ module BountyBoard {
         get value(){
             return this._value;
         }
-
+        
         constructor(position: number, signature: string, serviceName: string, description: string, value: number) {
             this._position = position;
             this._signature = signature;
@@ -91,13 +93,21 @@ module BountyBoard {
         }
 
 
+
         public render() {
+            var model = this.props.model;
+            var assignedClass = cx({
+                "bounty-board-item-assigned": model.assigned, 
+                "bounty-board-item-unassigned": !model.assigned
+            });
+            var assignedValue = model.assigned ? "Assigned" : "Not Assigned";
             return (<div className="bountyboard-item-container">
-                <div className="bountyboard-item-position">Pos: {this.props.model.position}</div>
-                <div className="bountyboard-item-signature">Signature: {this.props.model.signature}</div>
-                <div className="bountyboard-item-serviceName">Service: {this.props.model.serviceName}</div>
-                <div className="bountyboard-item-description">Description: {this.props.model.description}</div>
-                <div className="bountyboard-item-value">Value: {this.props.model.value}</div>
+                <div className="bountyboard-item-position">Pos: {model.position}</div>
+                <div className="bountyboard-item-signature">Signature: {model.signature}</div>
+                <div className="bountyboard-item-serviceName">Service: {model.serviceName}</div>
+                <div className="bountyboard-item-description">Description: {model.description}</div>
+                <div className="bountyboard-item-value">Value: {model.value}</div>
+                <div className={assignedClass}>{assignedValue}</div>
                 </div>
                 );
         }
