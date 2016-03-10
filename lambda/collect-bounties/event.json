@@ -168,7 +168,7 @@
         "changed_files": 1,
         "diff_url": "https://github.com/hudl/hudl-utilities/pull/295.diff",
         "issue_url": "https://api.github.com/repos/hudl/hudl-utilities/issues/295",
-        "body": "fixes 96fe548f",
+        "body": "fixes 96fe548f and 02e19ecd",
         "head": {
             "repo": {
                 "issues_url": "https://api.github.com/repos/hudl/hudl-utilities/issues{/number}",
