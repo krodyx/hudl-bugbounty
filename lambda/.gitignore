@@ -79,3 +79,9 @@ celerybeat-schedule
 
 # Spyder project settings
 .spyderproject
+
+# Credentials json file
+credentials.json
+
+# Mac DSStore
+.DS_Store
