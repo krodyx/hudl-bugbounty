@@ -9,3 +9,4 @@ env/
 credentials.json
 .idea/
 sumo-output*.json
+src/Hudl.BugBounty.WebApp/project.lock.json
