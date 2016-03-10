@@ -42,11 +42,12 @@ gulp.task("build:js", function(cb) {
     return shell('tsc -p Scripts/Home && echo 1 && echo 2 && browserify wwwroot/scripts/home/index.js -o wwwroot/scripts/home/bundle.js'); //Home compile
 });
 
+
 gulp.task("build:css", function () {
     return gulp.src('Styles/Home/**/*.scss')
         .pipe(plumber())
         .pipe(sass.sync().on('error', sass.logError))
-        .pipe(gulp.dest('wwwroot/css'));
+        .pipe(gulp.dest('wwwroot/css')); //we should get this minified and bundled into one file
 });
 
 gulp.task("build", ["build:js", "build:css"]);
