@@ -1,8 +1,8 @@
 ﻿{
   "DatabaseSettings": {
-    "Host": "hostname",
-    "Port": 1000,
-    "Database": "BugBounty"
+    "Host": "s-bountyhunt-mongo-rs1-use1c-01.external.app.staghudl.com",
+    "Port": 27017,
+    "Database": "bounty"
   },
   "LoggerSettings": {
     "Level": "Information"

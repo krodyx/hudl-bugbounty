@@ -1,4 +1,5 @@
 ﻿using System;
+using Hudl.BugBounty.WebApp.DataServices;
 using Hudl.BugBounty.WebApp.Options;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
@@ -34,6 +35,8 @@ namespace Hudl.BugBounty.WebApp
             services.Configure<LoggerSettings>(Configuration.GetSection("LoggerSettings"));
 
             services.AddMvc();
+
+            services.AddSingleton<IBountyRepository, MongoBountyRepository>();
         }
 
         
