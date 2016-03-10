@@ -39,7 +39,7 @@ gulp.task("install", function(cb) {
 
 
 gulp.task("build:js", function(cb) {
-    return shell('tsc -p Scripts/Home && echo 1 && echo 2 && browserify wwwroot/scripts/home/index.js -o wwwroot/scripts/home/bundle.js'); //Home compile
+    return shell('tsc -p Scripts/Home && browserify wwwroot/scripts/home/index.js -o wwwroot/scripts/home/bundle.js'); //Home compile
 });
 
 
