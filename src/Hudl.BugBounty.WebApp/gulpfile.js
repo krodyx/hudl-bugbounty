@@ -1,26 +1,16 @@
-﻿/// <binding BeforeBuild='install' AfterBuild='build' Clean='clean' />
+﻿/// <binding Clean='clean' ProjectOpened='install' />
 /*
 This file in the main entry point for defining Gulp tasks and using Gulp plugins.
 Click here to learn more. http://go.microsoft.com/fwlink/?LinkId=518007
 */
 "use strict";
 
-/*
-var gulp = require('gulp');
-
-gulp.task('default', function () {
-    // place code for your default task here
-});
-*/
-
-/// <binding Clean='clean' />
-
 var gulp = require("gulp"),
     rimraf = require("rimraf"),
     concat = require("gulp-concat"),
     cssmin = require("gulp-cssmin"),
     uglify = require("gulp-uglify"),
-    shell = require("gulp-shell");
+    run = require("gulp-run");
 
 var webroot = "./wwwroot/";
 
@@ -35,21 +25,28 @@ var paths = {
     concatCssDest: webroot + "css/site.min.css"
 };
 
-gulp.task("install", shell.task([
-    'npm install -g browserify bower tsd typescript',
-    'npm install',
-    'tsd install'
-]))
+var gulpFilePath = __dirname;
+var shell = function(cmd) {
+    return run(cmd, { "cwd": gulpFilePath }).exec();
+}
 
-gulp.task("build:js", shell.task([
-    'tsc -p Scripts', 
-    'browserify wwwroot/scripts/index.js -o wwwroot/scripts/bundle.js'
-]));
+gulp.task("install", function(cb) {
+    shell('npm install -g browserify bower tsd typescript && tsd install');
+});
+
+
+gulp.task("build:js", function(cb) {
+    return shell('tsc -p Scripts && echo 1 && echo 2 && browserify wwwroot/scripts/index.js -o wwwroot/scripts/bundle.js');
+});
 
 gulp.task("build:css", function (cb) {
 });
 
 gulp.task("build", ["build:js", "build:css"]);
+
+gulp.task('watch', function(cb) {
+    gulp.watch([paths.ts, paths.tsx], ['build:js']);
+});
 
 gulp.task("clean:js", function (cb) {
     rimraf(paths.concatJsDest, cb);
