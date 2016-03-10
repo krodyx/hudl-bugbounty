@@ -95,6 +95,11 @@ def lambda_handler(event, context):
 
     return 'Inserted {} bounties'.format(bounty_count)
 
+def open_db_access()
+
+def close_db_access()
+
+
 def get_github_token():
     credentials_json = json.loads(open(credentials_filename, 'r').read())
     return credentials_json.get('github_token')
