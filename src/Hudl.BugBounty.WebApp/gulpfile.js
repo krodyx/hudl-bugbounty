@@ -20,7 +20,8 @@ var gulp = require("gulp"),
     gutil = require('gulp-util'),
     sourcemaps = require('gulp-sourcemaps'),
     assign = require('lodash.assign'),
-    tsify = require('tsify');
+    tsify = require('tsify'),
+    glob = require('glob');
 
 var webroot = "./wwwroot/";
 
@@ -48,12 +49,15 @@ gulp.task("install", function(cb) {
         "&& tsd install");
 });
 
-// build
+var tsFiles = glob.sync("./Scripts/**/*.ts*");
+gutil.log("Found " + tsFiles);
 var customOpts = {
-    entries: ["Scripts/Home/index.tsx"],
+    entries: tsFiles,
     debug: true
 };
 var opts = assign({}, watchify.args, customOpts);
+
+// build
 var b = browserify(opts)
     .plugin(tsify, {
         //noImplicitAny: true,
@@ -78,7 +82,7 @@ function bundle() {
         })) // loads map from browserify file
         // Add transformation tasks to the pipeline here.
         .pipe(sourcemaps.write('./')) // writes .map file
-        .pipe(gulp.dest('./dist'));
+        .pipe(gulp.dest('./wwwroot/scripts'));
 }
 
 
@@ -118,7 +122,7 @@ function wbundle() {
         })) // loads map from browserify file
         // Add transformation tasks to the pipeline here.
         .pipe(sourcemaps.write('./')) // writes .map file
-        .pipe(gulp.dest('./dist'));
+        .pipe(gulp.dest('./wwwroot/scripts'));
 }
 gulp.task('watch:js', wbundle); // so you can run `gulp watch:js` to watch the files
 
