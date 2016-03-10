@@ -4,7 +4,6 @@ import datetime
 import logging
 import urllib
 
-
 from pymongo import MongoClient
 
 logger = logging.getLogger()
@@ -14,7 +13,7 @@ logger.setLevel(logging.INFO)
 
 sumo_base_url = 'https://api.us2.sumologic.com/api/v1/logs/search'
 credentials_filename = 'credentials.json'
-mongo_url = 'mongodb://s-bountyhunt-mongo-rs1-use1c-01.external.app.staghudl.com:27017'
+mongo_url = 'mongodb://172.28.2.208:27017'
 
 # sumo record fields
 count_sumo = '_count'
@@ -83,7 +82,7 @@ def generate_query_url(query=None, time_from=None, time_to=None, time_tz=None, o
     return full_url
 
 # Returns status code of request, but only saves to file on HTTP 200
-def execute_query(url, access_id, access_key, filename='sumo-output.json'):
+def execute_query(url, access_id, access_key, filename='/tmp/sumo-output.json'):
     
     logger.info('connecting to sumologic with id=%s key=%s', access_id,access_key)
     logger.info('requesting url %s', url)
@@ -109,7 +108,7 @@ def get_errors_collection(server_url=None):
     return errors
 
 
-def process_sumo_data(filename='sumo-output.json', collection=None):
+def process_sumo_data(filename='/tmp/sumo-output.json', collection=None):
     if collection is None:
         print('No Mongo collection provided')
         return
