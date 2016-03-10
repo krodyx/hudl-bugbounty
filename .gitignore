@@ -5,3 +5,7 @@ bower_components
 wwwroot
 src/Hudl.BugBounty.WebApp/Scripts/**/*.js
 typings
+env/
+credentials.json
+.idea/
+sumo-output*.json
