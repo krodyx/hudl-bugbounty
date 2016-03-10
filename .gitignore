@@ -8,3 +8,4 @@ typings
 env/
 credentials.json
 .idea/
+sumo-output*.json
