@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Hudl.BugBounty.WebApp.Models;
 using Hudl.BugBounty.WebApp.Options;
@@ -31,10 +32,16 @@ namespace Hudl.BugBounty.WebApp.DataServices
                     var batch = cursor.Current;
                     foreach (var document in batch)
                     {
-                        var squadName = document.GetElement("squadName").Value.AsString;
-                        var value = document.GetElement("value").Value.AsDouble;
-                        var dateCollected = document.GetElement("dateCollected").Value.AsBsonDateTime; // Will need to convert this to proper c# datetime
-                        bounties.Add(new Bounty() {DateCollected = new DateTime(dateCollected.MillisecondsSinceEpoch), Value = value, SquadName = squadName});
+                        BsonElement squadName;
+                        BsonElement value;
+                        BsonElement dateCollected;
+                        string squadNameValue = null;
+                        double valueValue = 0d;
+                        DateTime? dateCollectedDate = null;
+                        if(document.TryGetElement("squadName", out squadName)) squadNameValue = squadName.Value.AsString;
+                        if (document.TryGetElement("value", out value)) valueValue = value.Value.ToInt32();
+                        if(document.TryGetElement("dateCollected", out dateCollected)) dateCollectedDate = new DateTime(dateCollected.Value.AsBsonDateTime.MillisecondsSinceEpoch);
+                        bounties.Add(new Bounty() {DateCollected = dateCollectedDate??DateTime.MinValue , Value = valueValue, SquadName = squadNameValue});
                     }
                 }
             }

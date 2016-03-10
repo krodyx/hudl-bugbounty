@@ -18,7 +18,7 @@
   },
 
   "frameworks": {
-    "dnx462": {
+    "dnx451": {
       "dependencies": {
         "MongoDB.Driver": "2.2.3"
       }

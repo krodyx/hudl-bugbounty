@@ -2,10 +2,11 @@
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 
-/// <reference path="../../typings/react/react.d.ts" />
-/// <reference path="../../typings/react/react-dom.d.ts" />
+/// <reference path="../../typings/tsd.d.ts" />
+
 import React =  require('react');
 import ReactDOM = require('react-dom');
+import $ = require('jquery');
 
 module Leaderboard {
 
@@ -26,6 +27,8 @@ module Leaderboard {
 
     export interface ILeaderboardColumnModel {
         leaderboardItems: Array<ILeaderboardItem>;
+        fromDate: Date;
+        title: string;
     }
 
     export interface ILeaderboardColumnState {
@@ -33,9 +36,8 @@ module Leaderboard {
     }
 
     export interface ILeaderboardColumnProps {
-        Title: string;
-        EndDate: string;
         model: ILeaderboardColumnModel;
+        bountiesUrl: string;
     }
 
     //implementations
@@ -111,21 +113,51 @@ module Leaderboard {
 
     export class LeaderboardColumnModel implements ILeaderboardColumnModel {
         private _leaderboardItems: Array<ILeaderboardItem>;
+        private _fromDate: Date;
+        private _title: string;
         get leaderboardItems() {
             return this._leaderboardItems;
         }
 
-        constructor(leaderboardItems: Array<ILeaderboardItem>) {
+        get fromDate() {
+            return this._fromDate;        
+        }
+
+        get title() {
+            return this._title;
+        }
+
+        public addLeaderboardItem(leaderboardItem: ILeaderboardItem) {
+            this.leaderboardItems.push(leaderboardItem);
+        }
+
+        constructor(leaderboardItems: Array<ILeaderboardItem>, fromDate: Date, title: string) {
             this._leaderboardItems = leaderboardItems;
+            this._fromDate = fromDate;
+            this._title = title;
         }
     }
 
-    export class LeaderboardColumnComponent extends React.Component<ILeaderboardColumnProps, {}>{
+    export class LeaderboardColumnComponent extends React.Component<ILeaderboardColumnProps, ILeaderboardColumnState>{
         constructor(props: ILeaderboardColumnProps) {
             super(props);
+            this.state = {
+                isShowing: true
+            };
+        }
+
+        public componentDidMount() {
+            $.getJSON(this.props.bountiesUrl, function (data, status, jqXHR) {
+                //data should be all the bounties, need to group by squad rank and add them to the this.props.leaderboardItems
+                //$.each(data, function (i, value) {
+                //    var leaderBoardItem = new LeaderboardItem(i, value.squadName, 
+                //}.bind(this.props.leaderboardItems));
+                this.setState({ isShowing: this.state.isShowing }); // change state to trigger a render
+            }.bind(this));
         }
 
         public render() {
+            if (!this.state.isShowing) return;
             var allLeaders = this.props.model.leaderboardItems.map(i=> {
                 return (<li key={i.id}>
                             <LeaderboardItemComponent model={i} />
@@ -133,9 +165,9 @@ module Leaderboard {
             });
             return (<div className="leaderboard-column-container">
                         <div className="leaderboard-column-header">
-                            <span className="leaderboard-column-header-title">{this.props.Title}</span>
-                            <span className="leaderboard-column-header-endDate">{this.props.EndDate}</span>
-                            </div>
+                            <span className="leaderboard-column-header-title">{this.props.model.title}</span>
+                            <span className="leaderboard-column-header-endDate">{this.props.model.fromDate != null ? this.props.model.fromDate.toDateString() : ""}</span>
+                        </div>
                         <ul>
                             {allLeaders}
                         </ul>
@@ -148,8 +180,13 @@ module Leaderboard {
 var leaderboardItem1 = new Leaderboard.LeaderboardItem(1, "Boom Squad", "https://i.embed.ly/1/display?key=fc778e44915911e088ae4040f9f86dcd&url=https%3A%2F%2Fcrdurant26.files.wordpress.com%2F2015%2F02%2Fboom.jpg", 100, 1000, 60);
 var array = new Array<Leaderboard.ILeaderboardItem>();
 array.push(leaderboardItem1);
-var leaderboardItems = new Leaderboard.LeaderboardColumnModel(array);
+
+var dayOfWeek = new Date().getDay();
+var startOfWeek = new Date();
+startOfWeek.setDate(startOfWeek.getDate() - dayOfWeek);
+
+var leaderboardItems = new Leaderboard.LeaderboardColumnModel(array, startOfWeek, "This Week");
 
 var App = Leaderboard.LeaderboardColumnComponent;
 
-ReactDOM.render(<App Title='This Week' EndDate={new Date(2016, 3, 10).toDateString()} model={leaderboardItems} />, document.getElementById('content')); 
+ReactDOM.render(<App model={leaderboardItems} bountiesUrl='/home/getbounties' />, document.getElementById('content')); 
