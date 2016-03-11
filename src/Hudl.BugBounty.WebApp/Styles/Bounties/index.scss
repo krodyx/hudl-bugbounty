@@ -24,7 +24,7 @@ body {
     margin: auto;
     text-align: center;
     display: block;
-    padding: 20px;
+    padding: 2px;
     font-size:24px;
 }
 
@@ -60,6 +60,7 @@ body {
 
             &.rank {
                 background-color: $rank-color;
+                 max-width: 4rem;
 
                 @media screen and (max-width: $mobile-break) {
                     //width: $rank-width - 18px;
@@ -70,6 +71,7 @@ body {
             &.points {
                 background-color: lighten($bg-color, 20%);
                 color: $font-color;
+                max-width: 4rem;
 
                 @media screen and (max-width: $mobile-break) {
                     height: $headers-height - 10px;
@@ -86,6 +88,7 @@ body {
         border-top: 3px solid #222;
         border-bottom: 3px solid #222;
 
+
         .bountyboard-item {
             @extend .flex-item;
             flex: 1;
@@ -94,13 +97,19 @@ body {
             font-size: 18px;
             text-align: center;
             padding: 20px 10px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+           
 
             &.position {
                 background-color: #108E09;
+                max-width: 4rem;
             }
 
             &.points {
                 background-color: #0E4770;
+                max-width: 4rem;
             }
         }
     }
