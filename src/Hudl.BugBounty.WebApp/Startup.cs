@@ -40,6 +40,7 @@ namespace Hudl.BugBounty.WebApp
             services.AddMvc();
 
             services.AddSingleton<IBountyRepository, MongoBountyRepository>();
+            services.AddSingleton<ISquadRepository, MongoSquadRepository>();
         }
 
 

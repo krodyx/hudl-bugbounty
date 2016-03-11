@@ -16,24 +16,6 @@ namespace Hudl.BugBounty.WebApp.Controllers
             _logger = logger;
             _bountyRepository = bountyRepository;
         }
-        [HttpGet]
-        public async Task<JsonResult> Leaders()
-        {
-            return Json(await _bountyRepository.GetLeaders());
-        }
-
-        [HttpGet]
-        public async Task<JsonResult> Hits()
-        {
-            return Json(await _bountyRepository.GetHitlist());
-        }
-
-        [HttpGet]
-        public async Task<JsonResult> Hit(string signature)
-        {
-            return Json(await _bountyRepository.GetHit(signature));
-        }
-
 
         [HttpGet]
         public async Task<JsonResult> Bounties()

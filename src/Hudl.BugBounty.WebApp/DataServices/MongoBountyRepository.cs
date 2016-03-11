@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Hudl.BugBounty.WebApp.Models;
 using Hudl.BugBounty.WebApp.Options;
@@ -8,6 +7,7 @@ using Microsoft.Extensions.OptionsModel;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using Microsoft.Extensions.Logging;
+using System.Linq;
 
 namespace Hudl.BugBounty.WebApp.DataServices
 {
@@ -50,7 +50,6 @@ namespace Hudl.BugBounty.WebApp.DataServices
                             leader.SquadImage = squadImage.Value.AsString;
                         };
                         leader.AllTimeScore = 100;
-                        leader.WeeklyScore = 10;
                         leaders.Add(leader);
                     }
                 }
@@ -180,6 +179,37 @@ namespace Hudl.BugBounty.WebApp.DataServices
                 }
             }
             return null;
+        }
+
+
+        public async Task<List<Bounty>> GetBountiesFrom(DateTime fromTime)
+        {
+            var bounties = new List<Bounty>();
+            var bountyCollection = _mongoDatabase.GetCollection<BsonDocument>("bounties");
+            var builder = Builders<BsonDocument>.Filter;
+            var filter = builder.Exists("dateCollected") & builder.Gte("dateCollected", fromTime);
+            using (var cursor = await bountyCollection.FindAsync(filter))
+            {
+                while (await cursor.MoveNextAsync())
+                {
+                    var batch = cursor.Current;
+                    foreach (var document in batch)
+                    {
+                        BsonElement squadName;
+                        BsonElement value;
+                        BsonElement dateCollected;
+                        string squadNameValue = null;
+                        double valueValue = 0d;
+                        DateTime? dateCollectedDate = null;
+                        if (!document.TryGetElement("squadName", out squadName) || !document.TryGetElement("value", out value)) continue;
+                        if (document.TryGetElement("dateCollected", out dateCollected)) dateCollectedDate = new DateTime(dateCollected.Value.AsBsonDateTime.MillisecondsSinceEpoch);
+                        squadNameValue = squadName.Value.AsString;
+                        valueValue = value.Value.ToInt32();
+                        bounties.Add(new Bounty { SquadName = squadNameValue, Value = valueValue, DateCollected = dateCollectedDate});
+                    }
+                }
+            }
+            return bounties;
         }
     }
 }

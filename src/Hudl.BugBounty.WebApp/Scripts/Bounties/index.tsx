@@ -13,7 +13,6 @@ module BountyBoard {
 
     // interfaces
     export interface IBountyBoardItem {
-        id: number;
         position: number;
         signature: string;
         serviceName: string;
@@ -60,9 +59,7 @@ module BountyBoard {
     }
 
     export class BountyBoardItem implements IBountyBoardItem {
-        static BountyBoardItemId: number = 0;
 
-        private _id: number;
         private _position: number;
         private _signature: string;
         private _serviceName: string;
@@ -70,10 +67,6 @@ module BountyBoard {
         private _stacktrace: string;
         private _value: number;
         private _assigned: boolean;
-
-        get id() {
-            return BountyBoardItem.BountyBoardItemId++;
-        }
 
         get position() {
             return this._position;
@@ -194,8 +187,8 @@ module BountyBoard {
         public render() {
             var pos = 0;
             var bounties = this.state.data.map(i => {
-                return (<li key={i.id}>
-                    <BountyBoardItemComponent data={i} position={pos++} />
+                return (<li key={pos++}>
+                    <BountyBoardItemComponent data={i} position={pos} />
                 </li>);
             });
             return (<div className="bountyboard-container">
@@ -219,4 +212,3 @@ if (bountiesElem) {
         url="/api/bounties"
         pollInterval={5000} />, bountiesElem);
 }
-
