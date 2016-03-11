@@ -25,7 +25,7 @@ body {
     text-align: center;
     display: block;
     padding: 20px;
-    font-size:24px;
+    font-size: 24px;
 }
 
 .bountyboard-container {
@@ -67,6 +67,8 @@ body {
                 }
             }
 
+           
+
             &.points {
                 background-color: lighten($bg-color, 20%);
                 color: $font-color;
@@ -97,6 +99,16 @@ body {
 
             &.position {
                 background-color: #108E09;
+            }
+
+             &.signature {
+                a:link {
+                    color: #1c82cb;
+                }
+
+                a:visited {
+                    color: lighten(#1c82cb, 40%);
+                }
             }
 
             &.points {
