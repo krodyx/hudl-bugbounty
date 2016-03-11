@@ -59,16 +59,16 @@ namespace Hudl.BugBounty.WebApp.Controllers
 
 
             var leaders = (from b in bountiesBySquad
-                          join s in squadData on b.Key equals s.SquadName
-                          select
-                              new Leader()
-                              {
-                                  AllTimeScore = 2000,
-                                  SquadName = s.SquadName,
-                                  SquadImage = s.SquadImage,
-                                  TimeWindowScore = b.Sum(i => i.Value)
-                              }).OrderByDescending(i=>i.TimeWindowScore);
-                           
+                           join s in squadData on b.Key equals s.SquadName
+                           select
+                               new Leader()
+                               {
+                                   AllTimeScore = 2000,
+                                   SquadName = s.SquadName,
+                                   SquadImage = s.SquadImage,
+                                   TimeWindowScore = b.Sum(i => i.Value)
+                               }).OrderByDescending(i => i.TimeWindowScore);
+
             return Json(leaders);
         }
     }
