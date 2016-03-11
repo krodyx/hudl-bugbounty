@@ -1,4 +1,4 @@
-﻿// A '.tsx' file enables JSX support in the TypeScript compiler, 
+// A '.tsx' file enables JSX support in the TypeScript compiler, 
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 
@@ -128,9 +128,30 @@ module BountyBoard {
         constructor(props: IBountyBoardProps) {
             super(props);
         }
+        loadDataFromServer: function() {
+            $.ajax({
+              url: this.props.url,
+              dataType: 'json',
+              cache: false,
+              success: function(data) {
+                this.setState({data: data});
+              }.bind(this),
+              error: function(xhr, status, err) {
+                console.error(this.props.url, status, err.toString());
+              }.bind(this)
+            });
+          },
+          getInitialState: function() {
+            return {data: []};
+          },
+          componentDidMount: function() {
+            this.loadDataFromServer();
+            setInterval(this.loadDataFromServer, this.props.pollInterval || 5000);
+          },
+
 
         public render() {
-            var allBounties = this.props.model.bountyBoardItems.map(i=> {
+            var bounties = this.state.data.map(i=> {
                 return (<li key={i.id}>
                             <BountyBoardItemComponent model={i} />
                         </li>);
@@ -140,19 +161,19 @@ module BountyBoard {
                             <span className="bountyboard-header-title">{this.props.Title}</span>
                             </div>
                         <ul>
-                            {allBounties}
+                            {bounties}
                         </ul>
                     </div>);
         }
     }
 }
 
-var array = new Array<BountyBoard.IBountyBoardItem>();
-var bountyBoardItem = new BountyBoard.BountyBoardItem(1, "A12345", "Alpha", "Something went wrong", 850);
-array.push(bountyBoardItem);
-
-var bountyboardItems = new BountyBoard.BountyBoardModel(array);
-
 var App = BountyBoard.BountyBoardComponent;
 
-ReactDOM.render(<App Title='Top Bounties' model={bountyboardItems} />, document.getElementById('content')); 
+var bountiesElem = document.getElementById('bounties-content');
+if(bountiesElem){
+    ReactDOM.render(<App 
+        Title='Top Bounties' 
+        url="/bounties/examples" />, bountiesElem); 
+}
+

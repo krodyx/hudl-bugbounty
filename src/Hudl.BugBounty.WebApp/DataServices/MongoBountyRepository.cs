@@ -99,6 +99,7 @@ namespace Hudl.BugBounty.WebApp.DataServices
 
         public async Task<List<Bounty>> GetBounties()
         {
+            var hits = (await GetHitlist()).ToDictionary(h => h.Signature, h => h);
             var bounties = new List<Bounty>();
             var bountyCollection = _mongoDatabase.GetCollection<BsonDocument>("bounties");
             using (var cursor = await bountyCollection.FindAsync(new BsonDocument()))
@@ -111,13 +112,20 @@ namespace Hudl.BugBounty.WebApp.DataServices
                         BsonElement squadName;
                         BsonElement value;
                         BsonElement dateCollected;
+                        BsonElement errorId;
                         string squadNameValue = null;
                         double valueValue = 0d;
                         DateTime? dateCollectedDate = null;
+                        string errorIdValue = null;
+                        Hit matchingHit = null;
                         if (document.TryGetElement("squadName", out squadName)) squadNameValue = squadName.Value.AsString;
                         if (document.TryGetElement("value", out value)) valueValue = value.Value.ToInt32();
                         if (document.TryGetElement("dateCollected", out dateCollected)) dateCollectedDate = new DateTime(dateCollected.Value.AsBsonDateTime.MillisecondsSinceEpoch);
-                        bounties.Add(new Bounty() { DateCollected = dateCollectedDate ?? DateTime.MinValue, Value = valueValue, SquadName = squadNameValue });
+                        if (document.TryGetElement("errorId", out errorId)) {
+                            errorIdValue = errorId.Value.AsString;
+                            hits.TryGetValue(errorIdValue, out matchingHit);
+                        }
+                        bounties.Add(new Bounty() { DateCollected = dateCollectedDate ?? DateTime.MinValue, Value = valueValue, SquadName = squadNameValue, Hit = matchingHit });
                     }
                 }
             }
