@@ -13,6 +13,9 @@
     },
     "jquery/jquery.d.ts": {
       "commit": "0144ad5a74053f2292424847259c4c8e1d0fecaa"
+    },
+    "classnames/classnames.d.ts": {
+      "commit": "552fe5d3e45ef9c8ecd3eda2b6a24d2546c438f4"
     }
   }
 }

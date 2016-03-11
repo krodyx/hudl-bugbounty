@@ -92,8 +92,6 @@ var hitElem = document.getElementById('hit-content');
 var App = Hit.HitComponent;
 declare var hitId: string;
 
-console.log('hitId=', hitId);
-ReactDOM.render(<App dataUrl={'/api/hit/' + hitId} />, hitElem);
 if (hitElem && hitId) {
-    //ReactDOM.render(<App model={model} />, hitElem);
+    ReactDOM.render(<App dataUrl={'/api/hit/' + hitId} />, hitElem);
 }
