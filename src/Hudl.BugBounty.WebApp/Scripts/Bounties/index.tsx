@@ -131,7 +131,7 @@ module BountyBoard {
             return (<div className="bountyboard-item-container">
                 <div className="bountyboard-item position">{model.position}</div>
                 <div className="bountyboard-item signature">
-                    <a href={'/bounties/' + model.signature}> {model.signature}</a></div>
+                    <a href={'/hit/' + model.signature}> {model.signature}</a></div>
                 <div className="bountyboard-item serviceName">{model.serviceName}</div>
                 <div className="bountyboard-item description">{model.description}</div>
                 <div className={assignedClass}>{assignedValue}</div>

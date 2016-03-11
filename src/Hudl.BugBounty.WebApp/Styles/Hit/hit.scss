@@ -1,0 +1,26 @@
+﻿@import '../main.scss';
+$mobile-break: 450px;
+
+$rank-color: #108E09;
+$recent-color: #0E4770;
+
+main {
+    box-sizing: border-box;
+    overflow-y: auto;
+    overflow-x: hidden;
+    width: 100%;
+    margin: 20px auto;
+}
+
+h1 {
+    font-size: 2em;
+    text-align: center;
+    margin: 10px auto 20px;
+}
+
+.hit-container {
+    .hit-item {
+        padding:20px;
+    }
+}
+

@@ -22,5 +22,11 @@ namespace Hudl.BugBounty.WebApp.Controllers
         {
             return Json(await _bountyRepository.GetBounties());
         }
+
+        [HttpGet]
+        public async Task<JsonResult> Hit(string signature)
+        {
+            return Json(await _bountyRepository.GetHit(signature));
+        }
     }
 }
