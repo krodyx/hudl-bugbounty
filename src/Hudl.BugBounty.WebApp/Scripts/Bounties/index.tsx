@@ -2,17 +2,17 @@
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 
-/// <reference path="../../typings/react/react.d.ts" />
-/// <reference path="../../typings/react/react-dom.d.ts" />
+/// <reference path="../../typings/tsd.d.ts" />
 /// <reference path="../../typings/classnames/classnames.d.ts" />
-import React =  require('react');
+import React = require('react');
 import ReactDOM = require('react-dom');
-import cx = require('classnames');
+import classNames = require('classnames');
+import $ = require('jquery');
 
 module BountyBoard {
-   
-   // interfaces
-   export interface IBountyBoardItem {
+
+    // interfaces
+    export interface IBountyBoardItem {
         id: number;
         position: number;
         signature: string;
@@ -20,26 +20,46 @@ module BountyBoard {
         description: string;
         value: number;
         assigned: boolean;
-   }
+    }
 
-   export interface IBountyBoardItemProps {
-        model: IBountyBoardItem;
-   }
+    export interface IBountyBoardItemProps {
+        position: number;
+        data: BountyData;
+    }
 
-   export interface IBountyBoardModel {
+    export interface IBountyBoardModel {
         bountyBoardItems: Array<IBountyBoardItem>;
-   }
+    }
 
-   export interface IBountyBoardState {
+    export interface IBountyBoardState {
         isVisible: boolean;
-   }
+    }
 
-   export interface IBountyBoardProps {
+    export interface IBountyBoardProps {
         Title: string;
-        model: IBountyBoardModel;
-   }
+        url: string;
+        pollInterval: number;
+    }
 
-   export class BountyBoardItem implements IBountyBoardItem {
+    export class HitData {
+        key: string;
+        Signature: string;
+        Service: string;
+        Description: string;
+        Stacktrace: string;
+        FirstOccurrance: any;
+        CurrentValue: number;
+    }
+
+    export class BountyData {
+        HitId: string;
+        Hit: HitData;
+        SquadName: string;
+        DateCollected: any;
+        Value: number;
+    }
+
+    export class BountyBoardItem implements IBountyBoardItem {
         static BountyBoardItemId: number = 0;
 
         private _id: number;
@@ -47,11 +67,12 @@ module BountyBoard {
         private _signature: string;
         private _serviceName: string;
         private _description: string;
+        private _stacktrace: string;
         private _value: number;
         private _assigned: boolean;
 
         get id() {
-            return BountyBoardItem.BountyBoardItemId++;       
+            return BountyBoardItem.BountyBoardItemId++;
         }
 
         get position() {
@@ -70,46 +91,60 @@ module BountyBoard {
             return this._description;
         }
 
+        get stackgrace() {
+            return this._stacktrace;
+        }
+
         get assigned() {
             return this._assigned;
         }
 
-        get value(){
+        get value() {
             return this._value;
         }
-        
-        constructor(position: number, signature: string, serviceName: string, description: string, value: number) {
+
+        constructor(position: number, signature: string, serviceName: string, description: string, stacktrace: string, value: number) {
             this._position = position;
             this._signature = signature;
             this._serviceName = serviceName;
             this._description = description;
+            this._stacktrace = stacktrace;
             this._value = value;
         }
     }
 
     export class BountyBoardItemComponent extends React.Component<IBountyBoardItemProps, {}>{
+        private model: BountyBoardItem;
         constructor(props: IBountyBoardItemProps) {
             super(props);
+            var data = props.data;
+            var missing = "<missing>";
+            var hit = data.Hit || {
+                "Service": missing,
+                "Description": missing,
+                "Stacktrace": missing,
+                "CurrentValue": 0
+            };
+            this.model = new BountyBoardItem(props.position, data.HitId, hit.Service, hit.Description || missing, hit.Stacktrace, hit.CurrentValue);
         }
 
-
-
         public render() {
-            var model = this.props.model;
-            var assignedClass = cx({
-                "bounty-board-item-assigned": model.assigned, 
+            var model = this.model;
+            var assignedClass = classNames({
+                "bounty-board-item-assigned": model.assigned,
                 "bounty-board-item-unassigned": !model.assigned
             });
             var assignedValue = model.assigned ? "Assigned" : "Not Assigned";
             return (<div className="bountyboard-item-container">
-                <div className="bountyboard-item-position">Pos: {model.position}</div>
+                <div className="bountyboard-item-position">Pos: {model.position + 1}</div>
                 <div className="bountyboard-item-signature">Signature: {model.signature}</div>
                 <div className="bountyboard-item-serviceName">Service: {model.serviceName}</div>
                 <div className="bountyboard-item-description">Description: {model.description}</div>
+                <div className="bountyboard-item-stacktrace">Stacktrace: {model.stackgrace}</div>
                 <div className="bountyboard-item-value">Value: {model.value}</div>
                 <div className={assignedClass}>{assignedValue}</div>
-                </div>
-                );
+            </div>
+            );
         }
     }
 
@@ -124,46 +159,53 @@ module BountyBoard {
         }
     }
 
-      export class BountyBoardComponent extends React.Component<IBountyBoardProps, {}>{
+    export class BountyBoardComponent extends React.Component<IBountyBoardProps, any>{
+
         constructor(props: IBountyBoardProps) {
             super(props);
+            this.state = {
+                data: []
+            };
         }
-        loadDataFromServer: function() {
+
+        public loadDataFromServer() {
+            var board = this;
+            if (!board.props) {
+                return;
+            }
             $.ajax({
-              url: this.props.url,
-              dataType: 'json',
-              cache: false,
-              success: function(data) {
-                this.setState({data: data});
-              }.bind(this),
-              error: function(xhr, status, err) {
-                console.error(this.props.url, status, err.toString());
-              }.bind(this)
+                url: board.props.url,
+                dataType: 'json',
+                cache: false,
+                success: data => {
+                    board.setState({ data: data });
+                },
+                error: (xhr, status, err) => {
+                    console.error(this.props.url, status, err.toString());
+                }
             });
-          },
-          getInitialState: function() {
-            return {data: []};
-          },
-          componentDidMount: function() {
+        }
+
+        componentDidMount() {
             this.loadDataFromServer();
             setInterval(this.loadDataFromServer, this.props.pollInterval || 5000);
-          },
-
+        }
 
         public render() {
-            var bounties = this.state.data.map(i=> {
+            var pos = 0;
+            var bounties = this.state.data.map(i => {
                 return (<li key={i.id}>
-                            <BountyBoardItemComponent model={i} />
-                        </li>);
+                    <BountyBoardItemComponent data={i} position={pos++} />
+                </li>);
             });
             return (<div className="bountyboard-container">
-                        <div className="bountyboard-header">
-                            <span className="bountyboard-header-title">{this.props.Title}</span>
-                            </div>
-                        <ul>
-                            {bounties}
-                        </ul>
-                    </div>);
+                <div className="bountyboard-header">
+                    <span className="bountyboard-header-title">{this.props.Title}</span>
+                </div>
+                <ul className="bounties">
+                    {bounties}
+                </ul>
+            </div>);
         }
     }
 }
@@ -171,9 +213,10 @@ module BountyBoard {
 var App = BountyBoard.BountyBoardComponent;
 
 var bountiesElem = document.getElementById('bounties-content');
-if(bountiesElem){
-    ReactDOM.render(<App 
-        Title='Top Bounties' 
-        url="/bounties/examples" />, bountiesElem); 
+if (bountiesElem) {
+    ReactDOM.render(<App
+        Title="Top Bounties"
+        url="/api/bounties"
+        pollInterval={5000} />, bountiesElem);
 }
 
