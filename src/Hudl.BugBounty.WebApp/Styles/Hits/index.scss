@@ -12,15 +12,15 @@ body {
     background-color: lightblue;
 }
 
-.bountyboard-item-assigned {
+.hitboard-item-assigned {
     /*background-color: pink;*/
 }
 
-.bountyboard-item-unassigned {
+.hitboard-item-unassigned {
     /*background-color: lightgreen;*/
 }
 
-.bountyboard-header-title {
+.hitboard-header-title {
     margin: auto;
     text-align: center;
     display: block;
@@ -28,7 +28,7 @@ body {
     font-size:24px;
 }
 
-.bountyboard-container {
+.hitboard-container {
     max-width: 1000px;
     margin: auto;
     width: 90%;
@@ -78,7 +78,7 @@ body {
         }
     }
 
-    .bountyboard-item-container {
+    .hitboard-item-container {
         @extend .flex-container;
         width: 100%;
         margin-top: 0;
@@ -86,7 +86,7 @@ body {
         border-top: 3px solid #222;
         border-bottom: 3px solid #222;
 
-        .bountyboard-item {
+        .hitboard-item {
             @extend .flex-item;
             flex: 1;
             border: none;

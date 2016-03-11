@@ -5,11 +5,11 @@ using Microsoft.Extensions.Logging;
 
 namespace Hudl.BugBounty.WebApp.Controllers
 {
-    public class HitController : Controller
+    public class HitsController : Controller
     {
-        private readonly ILogger<BountiesController> _logger;
+        private readonly ILogger<HitsController> _logger;
 
-        public HitController(ILogger<BountiesController> logger)
+        public HitsController(ILogger<HitsController> logger)
         {
             _logger = logger;
         }

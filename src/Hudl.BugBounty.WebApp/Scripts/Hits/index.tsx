@@ -9,10 +9,10 @@ import ReactDOM = require('react-dom');
 import classNames = require('classnames');
 import $ = require('jquery');
 
-module BountyBoard {
+module HitBoard{
 
     // interfaces
-    export interface IBountyBoardItem {
+    export interface IHitBoardItem {
         position: number;
         signature: string;
         serviceName: string;
@@ -21,20 +21,20 @@ module BountyBoard {
         assigned: boolean;
     }
 
-    export interface IBountyBoardItemProps {
+    export interface IHitBoardItemProps {
         position: number;
-        data: BountyData;
+        data: HitData;
     }
 
-    export interface IBountyBoardModel {
-        bountyBoardItems: Array<IBountyBoardItem>;
+    export interface IHitBoardModel {
+        bountyBoardItems: Array<IHitBoardItem>;
     }
 
-    export interface IBountyBoardState {
+    export interface IHitBoardState {
         isVisible: boolean;
     }
 
-    export interface IBountyBoardProps {
+    export interface IHitBoardProps {
         Title: string;
         url: string;
         pollInterval: number;
@@ -58,7 +58,7 @@ module BountyBoard {
         Value: number;
     }
 
-    export class BountyBoardItem implements IBountyBoardItem {
+    export class HitBoardItem implements IHitBoardItem {
 
         private _position: number;
         private _signature: string;
@@ -106,54 +106,55 @@ module BountyBoard {
         }
     }
 
-    export class BountyBoardItemComponent extends React.Component<IBountyBoardItemProps, {}>{
-        private model: BountyBoardItem;
-        constructor(props: IBountyBoardItemProps) {
+    export class HitBoardItemComponent extends React.Component<IHitBoardItemProps, {}>{
+        private model: HitBoardItem;
+        constructor(props: IHitBoardItemProps) {
             super(props);
             var data = props.data;
             var missing = "<missing>";
-            var hit = data.Hit || {
+            var hit = data || {
+                "key": missing,
                 "Service": missing,
                 "Description": missing,
                 "Stacktrace": missing,
                 "CurrentValue": 0
             };
-            this.model = new BountyBoardItem(props.position, data.HitId, hit.Service, hit.Description || missing, hit.Stacktrace, hit.CurrentValue);
+            this.model = new HitBoardItem(props.position, hit.key, hit.Service, hit.Description || missing, hit.Stacktrace, hit.CurrentValue);
         }
 
         public render() {
             var model = this.model;
             var assignedClass = classNames({
-                "bountyboard-item assigned": model.assigned,
-                "bountyboard-item unassigned": !model.assigned
+                "hitboard-item assigned": model.assigned,
+                "hitboard-item unassigned": !model.assigned
             });
             var assignedValue = model.assigned ? "Assigned" : "Not Assigned";
-            return (<div className="bountyboard-item-container">
-                <div className="bountyboard-item position">{model.position}</div>
-                <div className="bountyboard-item signature">{model.signature}</div>
-                <div className="bountyboard-item serviceName">{model.serviceName}</div>
-                <div className="bountyboard-item description">{model.description}</div>
+            return (<div className="hitboard-item-container">
+                <div className="hitboard-item position">{model.position}</div>
+                <div className="hitboard-item signature">{model.signature}</div>
+                <div className="hitboard-item serviceName">{model.serviceName}</div>
+                <div className="hitboard-item description">{model.description}</div>
                 <div className={assignedClass}>{assignedValue}</div>
-                <div className="bountyboard-item value points"> {model.value} </div>
+                <div className="hitboard-item value points"> {model.value} </div>
             </div>
             );
         }
     }
 
-    export class BountyBoardModel implements IBountyBoardModel {
-        private _bountyBoardItems: Array<IBountyBoardItem>;
+    export class HitBoardModel implements IHitBoardModel {
+        private _bountyBoardItems: Array<IHitBoardItem>;
         get bountyBoardItems() {
             return this._bountyBoardItems;
         }
 
-        constructor(bountyBoardItems: Array<IBountyBoardItem>) {
+        constructor(bountyBoardItems: Array<IHitBoardItem>) {
             this._bountyBoardItems = bountyBoardItems;
         }
     }
 
-    export class BountyBoardComponent extends React.Component<IBountyBoardProps, any>{
+    export class HitBoardComponent extends React.Component<IHitBoardProps, any>{
 
-        constructor(props: IBountyBoardProps) {
+        constructor(props: IHitBoardProps) {
             super(props);
             this.state = {
                 data: []
@@ -187,15 +188,15 @@ module BountyBoard {
             var pos = 0;
             var bounties = this.state.data.map(i => {
                 return (<li key={pos++}>
-                    <BountyBoardItemComponent data={i} position={pos} />
+                    <HitBoardItemComponent data={i} position={pos} />
                 </li>);
             });
-            return (<div className="bountyboard-container">
-                <div className="bountyboard-header">
-                    <span className="bountyboard-header-title">{this.props.Title}</span>
+            return (<div className="hitboard-container">
+                <div className="hitboard-header">
+                    <span className="hitboard-header-title">{this.props.Title}</span>
                 </div>
-                <ul className="bounties">
-                    <div className="bountyboard-item-container">
+                <ul className="hits">
+                    <div className="hitboard-item-container">
                         <div className="headers">
                             <div className="rank">Rank</div>
                             <div className="sig">Signature</div>
@@ -212,12 +213,14 @@ module BountyBoard {
     }
 }
 
-var App = BountyBoard.BountyBoardComponent;
+var App = HitBoard.HitBoardComponent;
 
-var bountiesElem = document.getElementById('bounties-content');
-if (bountiesElem) {
+var hitsElem = document.getElementById('hits-content');
+if (hitsElem) {
     ReactDOM.render(<App
         Title="Top Bounties"
-        url="/api/bounties"
-        pollInterval={5000} />, bountiesElem);
+        url="/api/hits"
+        pollInterval={5000} />, hitsElem);
+} else {
+    console.log('hitsElem not found');
 }
