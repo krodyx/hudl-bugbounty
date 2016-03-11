@@ -1,24 +1,22 @@
+@using Newtonsoft.Json
+@model Hudl.BugBounty.WebApp.Models.Hit
+
 @section Styles
 {
-    <link rel="stylesheet" type="text/css" href="~/css/hit/index.css" />
+    <link rel="stylesheet" type="text/css" href="~/css/hit/hit.css" />
 }
 
 @{
     ViewBag.Title = "Hudl Bug Bounty - Hit";
+
+    var hitId = Model.key;
 }
 
-<div id="content">
-    <ul class="flex-container">  
-        <li class="flex-item">
-            <main>
-                <div id="root"></div>
-            </main>
-        </li>
-    </ul>
+<div id="hit-content">
 </div>
 
 @section Scripts
 {
-    <!--<script type="text/javascript" src="~/scripts/home/bundle.js"></script>-->
-    <script src="js/hit.js"></script>
+    <script type="text/javascript">var hitId = "@hitId";</script>
+
 }

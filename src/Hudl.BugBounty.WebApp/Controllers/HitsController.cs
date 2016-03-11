@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+using Hudl.BugBounty.WebApp.DataServices;
 using Microsoft.AspNet.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -7,24 +9,27 @@ namespace Hudl.BugBounty.WebApp.Controllers
 {
     public class HitsController : Controller
     {
+        private readonly IBountyRepository _bountyRepository;
         private readonly ILogger<HitsController> _logger;
 
-        public HitsController(ILogger<HitsController> logger)
+        public HitsController(ILogger<HitsController> logger, IBountyRepository bountyRepository)
         {
             _logger = logger;
+            _bountyRepository = bountyRepository;
         }
-        
-        public IActionResult Index(string signature)
+
+
+        public IActionResult Index()
         {
             _logger.LogInformation("Index action started.");
             return View();
         }
-        
-        [HttpGet("/hit/{signature}")]
-        public IActionResult Hit(string signature)
+        [HttpGet("/hits/{signature}")]
+        public async Task<IActionResult> Hit(string signature)
         {
-            _logger.LogInformation("Index action started.");
-            return View();
+            _logger.LogInformation("Hit action started.");
+            var hit = await _bountyRepository.GetHit(signature);
+            return View(hit);
         }
     }
 }

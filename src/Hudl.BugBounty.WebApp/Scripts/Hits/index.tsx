@@ -9,7 +9,7 @@ import ReactDOM = require('react-dom');
 import classNames = require('classnames');
 import $ = require('jquery');
 
-module HitBoard{
+module HitBoard {
 
     // interfaces
     export interface IHitBoardItem {
@@ -131,7 +131,9 @@ module HitBoard{
             var assignedValue = model.assigned ? "Assigned" : "Not Assigned";
             return (<div className="hitboard-item-container">
                 <div className="hitboard-item position">{model.position}</div>
-                <div className="hitboard-item signature">{model.signature}</div>
+                <div className="hitboard-item signature">
+                    <a href={'/hits/' + model.signature}>{model.signature}</a>
+                </div>
                 <div className="hitboard-item serviceName">{model.serviceName}</div>
                 <div className="hitboard-item description">{model.description}</div>
                 <div className={assignedClass}>{assignedValue}</div>

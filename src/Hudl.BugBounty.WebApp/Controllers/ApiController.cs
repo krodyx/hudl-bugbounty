@@ -24,6 +24,12 @@ namespace Hudl.BugBounty.WebApp.Controllers
         }
 
         [HttpGet]
+        public async Task<JsonResult> Hit(string signature)
+        {
+            return Json(await _bountyRepository.GetHit(signature));
+        }
+
+        [HttpGet]
         public async Task<JsonResult> Hits()
         {
             return Json(await _bountyRepository.GetHitlist());

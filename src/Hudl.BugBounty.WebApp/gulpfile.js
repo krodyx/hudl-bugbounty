@@ -38,13 +38,13 @@ var paths = {
 };
 
 var gulpFilePath = __dirname;
-var shell = function(cmd) {
+var shell = function (cmd) {
     return run(cmd, {
         "cwd": gulpFilePath
     }).exec();
 }
 
-gulp.task("install", function(cb) {
+gulp.task("install", function (cb) {
     shell("npm install -g browserify bower tsd typescript " +
         "&& tsd install");
 });
@@ -88,7 +88,7 @@ function bundle() {
 
 gulp.task('build:js', bundle);
 
-gulp.task("build:sass", function() {
+gulp.task("build:sass", function () {
     return gulp.src(paths.sass)
         .pipe(plumber())
         .pipe(sass.sync().on('error', sass.logError))
@@ -127,7 +127,7 @@ function wbundle() {
 }
 gulp.task('watch:js', wbundle); // so you can run `gulp watch:js` to watch the files
 
-gulp.task("watch:sass", function(cb) {
+gulp.task("watch:sass", function (cb) {
 
     gulp.watch([paths.sass], ['build:sass']);
 });
@@ -137,27 +137,27 @@ gulp.task("watch:sass", function(cb) {
 gulp.task('watch', ["watch:js", "watch:sass"]);
 
 // clean
-gulp.task("clean:js", function(cb) {
+gulp.task("clean:js", function (cb) {
     rimraf(paths.concatJsDest, cb);
 });
 
-gulp.task("clean:css", function(cb) {
+gulp.task("clean:css", function (cb) {
     rimraf(paths.concatCssDest, cb);
 });
 
 gulp.task("clean", ["clean:js", "clean:css"]);
 
 // min
-gulp.task("min:js", function() {
+gulp.task("min:js", function () {
     return gulp.src([paths.js, "!" + paths.minJs], {
-            base: "."
-        })
+        base: "."
+    })
         .pipe(concat(paths.concatJsDest))
         .pipe(uglify())
         .pipe(gulp.dest("."));
 });
 
-gulp.task("min:css", function() {
+gulp.task("min:css", function () {
     return gulp.src([paths.css, "!" + paths.minCss])
         .pipe(concat(paths.concatCssDest))
         .pipe(cssmin())
