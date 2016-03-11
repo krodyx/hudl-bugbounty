@@ -106,16 +106,15 @@ module Leaderboard {
 
         public render() {
             return (<div className="leaderboard-item-container" key={this.props.model.id}>
-                <h3 className="leaderboard-item-rank">{this.props.model.position}</h3>
-                <img className="leaderboard-item-squad-image" src={this.props.model.squadImageUrl}></img>
-                <h3 className="leaderboard-item-squadname">{this.props.model.squadName}</h3>
-                <div className="leaderboard-item-points-container">
-                    <h3 className="points">
-                        <span className="pt-value">{this.props.model.timeframePoints}</span>
-                        <span className="pt-change">Change: {this.props.model.daysChange}</span>
-                    </h3>
-                </div>
-            </div>
+                        <h3 className="leaderboard-item-rank">{this.props.model.position}</h3>
+                        <img className="leaderboard-item-squad-image" src={this.props.model.squadImageUrl}></img>
+                        <h3 className="leaderboard-item-squadname">{this.props.model.squadName}</h3>
+                        <div className="leaderboard-item-points-container">
+                            <h3 className="points">
+                                <span className="pt-value">{this.props.model.timeframePoints}</span>
+                            </h3>
+                        </div>
+                    </div>
             );
         }
     }
