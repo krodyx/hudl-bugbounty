@@ -7,5 +7,8 @@ namespace Hudl.BugBounty.WebApp.DataServices
     public interface IBountyRepository
     {
         Task<List<Bounty>> GetBounties();
+        Task<List<Leader>> GetLeaders();
+        Task<List<Hit>> GetHitlist();
+        Task<Hit> GetHit(string signature);
     }
 }

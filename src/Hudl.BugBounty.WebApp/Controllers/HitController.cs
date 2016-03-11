@@ -5,16 +5,23 @@ using Microsoft.Extensions.Logging;
 
 namespace Hudl.BugBounty.WebApp.Controllers
 {
-    public class BountiesController : Controller
+    public class HitController : Controller
     {
         private readonly ILogger<BountiesController> _logger;
 
-        public BountiesController(ILogger<BountiesController> logger)
+        public HitController(ILogger<BountiesController> logger)
         {
             _logger = logger;
         }
         
-        public IActionResult Index()
+        public IActionResult Index(string signature)
+        {
+            _logger.LogInformation("Index action started.");
+            return View();
+        }
+        
+        [HttpGet("/hit/{signature}")]
+        public IActionResult Hit(string signature)
         {
             _logger.LogInformation("Index action started.");
             return View();

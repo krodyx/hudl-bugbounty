@@ -130,7 +130,9 @@ gulp.task("watch:sass", function(cb) {
     gulp.watch([paths.sass], ['build:css']);
 });
 
-gulp.task('watch', ["watch:js", "watch:sass"]);
+gulp.task('watch:web', shell.task(['dnx-watch web']));
+
+gulp.task('watch', ["watch:js", "watch:sass", "watch:web"]);
 
 // clean
 gulp.task("clean:js", function(cb) {

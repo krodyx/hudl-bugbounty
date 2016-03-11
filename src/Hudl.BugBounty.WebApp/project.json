@@ -36,8 +36,7 @@
   ],
   "scripts": {
     "prebuild": [
-      "npm install",
-      "bower install"
+      "npm install"
     ],
     "postbuild": [
       "gulp build" 

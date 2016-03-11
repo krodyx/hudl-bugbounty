@@ -7,9 +7,18 @@
     ViewBag.Title = "Hudl Bug Bounties";
 }
 
-<div id="content"></div>
+<div id="content">
+    <ul class="flex-container">  
+        <li class="flex-item">
+            <main>
+                <div id="root"></div>
+            </main>
+        </li>
+    </ul>
+</div>
 
 @section Scripts
 {
-    <script type="text/javascript" src="~/scripts/bounties/bundle.js"></script>
+    <!--<script type="text/javascript" src="~/js/bounties/bundle.js"></script>-->
+    <script src="js/bounties.js"></script>
 }
