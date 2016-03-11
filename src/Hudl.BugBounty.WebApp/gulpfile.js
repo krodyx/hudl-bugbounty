@@ -88,14 +88,14 @@ function bundle() {
 
 gulp.task('build:js', bundle);
 
-gulp.task("build:css", function() {
+gulp.task("build:sass", function() {
     return gulp.src(paths.sass)
         .pipe(plumber())
         .pipe(sass.sync().on('error', sass.logError))
         .pipe(gulp.dest('wwwroot/css')); //we should get this minified and bundled into one file
 });
 
-gulp.task("build", ["build:js", "build:css"]);
+gulp.task("build", ["build:js", "build:sass"]);
 
 // watch
 var w = watchify(browserify(opts))
@@ -109,6 +109,7 @@ var w = watchify(browserify(opts))
     });
 w.on('update', wbundle); // on any dep update, runs the bundler
 w.on('log', gutil.log); // output build logs to terminal
+
 function wbundle() {
     return w.bundle()
         // log errors if they happen
@@ -127,7 +128,8 @@ function wbundle() {
 gulp.task('watch:js', wbundle); // so you can run `gulp watch:js` to watch the files
 
 gulp.task("watch:sass", function(cb) {
-    gulp.watch([paths.sass], ['build:css']);
+
+    gulp.watch([paths.sass], ['build:sass']);
 });
 
 //gulp.task('watch:web', shell.task(['dnx-watch web']));

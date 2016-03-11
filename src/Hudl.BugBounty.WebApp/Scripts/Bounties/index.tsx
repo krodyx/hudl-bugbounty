@@ -124,18 +124,17 @@ module BountyBoard {
         public render() {
             var model = this.model;
             var assignedClass = classNames({
-                "bounty-board-item-assigned": model.assigned,
-                "bounty-board-item-unassigned": !model.assigned
+                "bountyboard-item assigned": model.assigned,
+                "bountyboard-item unassigned": !model.assigned
             });
             var assignedValue = model.assigned ? "Assigned" : "Not Assigned";
             return (<div className="bountyboard-item-container">
-                <div className="bountyboard-item-position">Pos: {model.position + 1}</div>
-                <div className="bountyboard-item-signature">Signature: {model.signature}</div>
-                <div className="bountyboard-item-serviceName">Service: {model.serviceName}</div>
-                <div className="bountyboard-item-description">Description: {model.description}</div>
-                <div className="bountyboard-item-stacktrace">Stacktrace: {model.stackgrace}</div>
-                <div className="bountyboard-item-value">Value: {model.value}</div>
+                <div className="bountyboard-item position">{model.position + 1}</div>
+                <div className="bountyboard-item signature">{model.signature}</div>
+                <div className="bountyboard-item serviceName">{model.serviceName}</div>
+                <div className="bountyboard-item description">{model.description}</div>
                 <div className={assignedClass}>{assignedValue}</div>
+                <div className="bountyboard-item value points"> {model.value} </div>
             </div>
             );
         }
@@ -196,6 +195,16 @@ module BountyBoard {
                     <span className="bountyboard-header-title">{this.props.Title}</span>
                 </div>
                 <ul className="bounties">
+                    <div className="bountyboard-item-container">
+                        <div className="headers">
+                            <div className="rank">Rank</div>
+                            <div className="sig">Signature</div>
+                            <div className="service">Service</div>
+                            <div className="description">Description</div>
+                            <div className="assigned">Assigned</div>
+                            <div className="points">Points</div>
+                        </div>
+                    </div>
                     {bounties}
                 </ul>
             </div>);

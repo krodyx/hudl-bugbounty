@@ -204,11 +204,6 @@ module Leaderboard {
     }
 }
 
-// Get these from our backend
-//var leaderboardItem1 = new Leaderboard.LeaderboardItem(1, "Boom Squad", "https://i.embed.ly/1/display?key=fc778e44915911e088ae4040f9f86dcd&url=https%3A%2F%2Fcrdurant26.files.wordpress.com%2F2015%2F02%2Fboom.jpg", 100, 1000, 60);
-//var array = new Array<Leaderboard.ILeaderboardItem>();
-//array.push(leaderboardItem1);
-
 var dayOfWeek = new Date().getDay();
 var startOfWeek = new Date();
 startOfWeek.setDate(startOfWeek.getDate() - dayOfWeek);
