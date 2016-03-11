@@ -1,9 +1,164 @@
-﻿body {
-    background-color: darkslategrey;
+﻿@import '../main.scss';
+$mobile-break: 450px;
+
+$rank-color: #108E09;
+$recent-color: #0E4770;
+$alltime-color: #480F76;
+$headers-height: 40px;
+$header-title-margin: 8px;
+$rank-width: 80px;
+$title-size-break: 950px;
+$hard-break: 800px;
+$leaderitem-height: 80px;
+
+main {
+  box-sizing: border-box;
+  overflow-y: auto;
+  overflow-x: hidden;
+  width: 100%;
+  margin: 20px auto;
 }
 
-.leaderboard-item-squad-image img {
-    max-width: 100px;
+h1 {
+  font-size: 2em;
+  text-align: center;
+  margin: 10px auto 20px;
+}
+
+
+
+.leaderboard-column-container {
+    max-width: 1000px;
+    margin: auto;
+    width: 90%;
+    background-color: lighten($bg-color, 10%);
+    @media screen and (max-width: $mobile-break) {
+        width:97%;
+    }
+    .headers{
+        position: relative;
+        border: 3px solid #222;
+        height: $headers-height;
+        @media screen and (max-width: $mobile-break) {
+            height: $headers-height - 10px;
+        }
+        h3{
+            text-align: center;
+            font-size: 20px;
+            float: left;
+            padding:$header-title-margin 0;
+            height: $headers-height - 2 * $header-title-margin;
+            @media screen and (max-width: $mobile-break) {
+                font-size: 1em;
+                height: $headers-height - 2 * $header-title-margin - 10px;
+            }
+         }
+        .rank{
+            width: $rank-width;
+            background-color: $rank-color;
+            @media screen and (max-width: $mobile-break) {
+                width: $rank-width - 18px;
+                font-size: 1em;
+            }
+        }
+        .squad{
+                margin-left: 10px;
+        }
+        .points{
+            background-color: lighten($bg-color, 20%);
+            color: $font-color;
+            border: none;
+            position: absolute;
+            right: 0;
+            width: 140px;
+            @media screen and (max-width: $mobile-break) {
+                height: $headers-height - 10px;
+            }
+        }
+     }
+    .leaderboard-item-container{
+        border: 3px solid #222;
+        height: $leaderitem-height;
+        position: relative;
+        .leaderboard-item-rank{
+            float: left;
+            font-size: 1.5em;
+            text-align: center;
+            height: $leaderitem-height - 56px;
+            width: $rank-width;
+            padding: 28px 0;
+            background-color: $rank-color;
+            @media screen and (max-width: $mobile-break) {
+                width:$rank-width - 40px;   
+            }
+        }
+        .leaderboard-item-squad-image{
+             height: $leaderitem-height;
+             float: left;
+        }
+        .leaderboard-item-squadname{
+            white-space: nowrap;
+            margin: $header-title-margin 0;
+            font-size: 16px;
+            height: 0.5 * $leaderitem-height - 2*$header-title-margin;
+            width: 100%;
+            margin-left: $header-title-margin + $leaderitem-height + $rank-width;
+            @media screen and (max-width: $mobile-break) {
+                margin-left: $header-title-margin + $leaderitem-height + $rank-width - 40px;
+            }
+            @media screen and (min-width: $hard-break) {
+                width: 100px;
+                font-size: 1.3em;
+                float:left;
+                margin: $header-title-margin * 3;
+                height: $leaderitem-height - 6 * $header-title-margin;
+            }
+            @media screen and (min-width: $title-size-break) {
+                font-size: 1.5em;
+                margin: $header-title-margin * 2;
+                height: $leaderitem-height - 4 * $header-title-margin;
+            }
+        }
+        .leaderboard-item-points-container{
+            height: 0.5 * $leaderitem-height;
+            margin: 0 0 0 2*$leaderitem-height;
+        }
+        .points{
+            float: right;
+            width: 50%;
+            height: 0.5* $leaderitem-height - 20px;
+            padding: 10px 0;
+            text-align: center;
+            .pt-value{
+                background-color: $recent-color;
+            }
+            .pt-change{
+                background-color: $alltime-color;
+            }
+            @media screen and (min-width: $hard-break) {
+                padding: 0;
+                margin: 0;
+                width: 140px;
+                height: $leaderitem-height;
+                .pt-value {
+                    font-size: 1.4em;
+                    display: block;
+                    width: 100%;
+                    padding: 25px 0;
+                    text-align: center;
+                    height: 30px;
+                }
+                .pt-change {
+                    font-size: 1em;
+                    display: block;
+                    width: 100%;
+                    padding: 8px 0;
+                    text-align: center;
+                    height:  $leaderitem-height * 0.25;
+                }
+            }
+        }
+    }
 }
 
 

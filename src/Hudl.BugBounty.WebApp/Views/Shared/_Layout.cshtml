@@ -5,10 +5,20 @@
     <meta name="viewport" content="width=device-width"/>
     <title>@ViewBag.Title</title>
     @RenderSection("Styles")
-    
+    <link rel="stylesheet" type="text/css" href="~/css/main.css"/>
+    <link rel='stylesheet prefetch' href='https://fonts.googleapis.com/css?family=Open+Sans:400,700'>
+    <link rel="stylesheet" type="text/css" href="~/css/navbar.css" />
 </head>
-    <body>
-        @RenderBody()
-        @RenderSection("Scripts")
-    </body>
+<body>
+<div id='navbar'>
+    <ul>
+        <li><a href='/'>LEADERBOARD</a></li>
+        <li><a href='/bounties'>HIT LIST</a></li>
+    </ul>
+</div>
+@RenderBody()
+@RenderSection("Scripts")
+<!-- we're bundling everything into the same script right now. not great but we'll split the pages out into seperate bundles later-->
+<script type="text/javascript" src="~/scripts/bundle.js"></script> 
+</body>
 </html>
