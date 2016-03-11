@@ -4,7 +4,7 @@
 
 /// <reference path="../../typings/tsd.d.ts" />
 
-import React =  require('react');
+import React = require('react');
 import ReactDOM = require('react-dom');
 import $ = require('jquery');
 
@@ -31,11 +31,11 @@ module Leaderboard {
         title: string;
     }
 
-    export interface ILeaderboardColumnState { 
+    export interface ILeaderboardColumnState {
         isShowing: boolean;
     }
 
-    export interface ILeaderboardColumnProps { 
+    export interface ILeaderboardColumnProps {
         model: ILeaderboardColumnModel;
         bountiesUrl: string;
     }
@@ -53,7 +53,7 @@ module Leaderboard {
         private _daysChange: number;
 
         get id() {
-            return LeaderboardItem.LeaderboardItemId++;       
+            return LeaderboardItem.LeaderboardItemId++;
         }
 
         get position() {
@@ -97,17 +97,17 @@ module Leaderboard {
 
         public render() {
             return (<div className="leaderboard-item-container">
-                        <span className="leaderboard-item-position">Pos: {this.props.model.position}</span>
-                        <div className="leaderboard-item-squad-image">Image: <img src={this.props.model.squadImageUrl}></img></div>
-                        <span className="leaderboard-item-squad">
-                            <div className="leaderboard-item-squad-squadname">Name: {this.props.model.squadName}</div>
-                            <div className="leaderboard-item-squad-alltimepoints">AllPoints: {this.props.model.alltimePoints}</div>
-                        </span>
-                        <span className="leaderboard-item-points">
-                            <div className="leaderboard-item-points-timeframepoints">Points: {this.props.model.timeframePoints}</div>
-                            <div className="leaderboard-item-points-change">Change: {this.props.model.daysChange}</div>
-                        </span>
-                    </div>);
+                <span className="leaderboard-item-position">Pos: {this.props.model.position}</span>
+                <div className="leaderboard-item-squad-image">Image: <img src={this.props.model.squadImageUrl}></img></div>
+                <span className="leaderboard-item-squad">
+                    <div className="leaderboard-item-squad-squadname">Name: {this.props.model.squadName}</div>
+                    <div className="leaderboard-item-squad-alltimepoints">AllPoints: {this.props.model.alltimePoints}</div>
+                </span>
+                <span className="leaderboard-item-points">
+                    <div className="leaderboard-item-points-timeframepoints">Points: {this.props.model.timeframePoints}</div>
+                    <div className="leaderboard-item-points-change">Change: {this.props.model.daysChange}</div>
+                </span>
+            </div>);
         }
     }
 
@@ -120,7 +120,7 @@ module Leaderboard {
         }
 
         get fromDate() {
-            return this._fromDate;        
+            return this._fromDate;
         }
 
         get title() {
@@ -158,24 +158,24 @@ module Leaderboard {
 
         public render() {
             if (!this.state.isShowing) return;
-            var allLeaders = this.props.model.leaderboardItems.map(i=> {
+            var allLeaders = this.props.model.leaderboardItems.map(i => {
                 return (<li key={i.id}>
-                            <LeaderboardItemComponent model={i} />
-                        </li>);
+                    <LeaderboardItemComponent model={i} />
+                </li>);
             });
             return (<div>
-                    <a href="bounties">Bounty List</a>
-                
+                <a href="bounties">Bounty List</a>
+
                 <div className="leaderboard-column-container">
-                        <div className="leaderboard-column-header">
-                            <span className="leaderboard-column-header-title">{this.props.model.title}</span>
-                            <span className="leaderboard-column-header-endDate">{this.props.model.fromDate != null ? this.props.model.fromDate.toDateString() : ""}</span>
-                        </div>
-                        <ul>
-                            {allLeaders}
-                        </ul>
+                    <div className="leaderboard-column-header">
+                        <span className="leaderboard-column-header-title">{this.props.model.title}</span>
+                        <span className="leaderboard-column-header-endDate">{this.props.model.fromDate != null ? this.props.model.fromDate.toDateString() : ""}</span>
                     </div>
-                    </div>);
+                    <ul>
+                        {allLeaders}
+                    </ul>
+                </div>
+            </div>);
         }
     }
 }
@@ -193,4 +193,7 @@ var leaderboardItems = new Leaderboard.LeaderboardColumnModel(array, startOfWeek
 
 var App = Leaderboard.LeaderboardColumnComponent;
 
-ReactDOM.render(<App model={leaderboardItems} bountiesUrl='/home/getbounties' />, document.getElementById('content')); 
+var leaderboardElem = document.getElementById('leaderboard-content');
+if (leaderboardElem) {
+    ReactDOM.render(<App model={leaderboardItems} bountiesUrl='/home/bounties' />, leaderboardElem);
+} 

@@ -7,6 +7,7 @@ using Hudl.BugBounty.WebApp.Options;
 using Microsoft.Extensions.OptionsModel;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using Microsoft.Extensions.Logging;
 
 namespace Hudl.BugBounty.WebApp.DataServices
 {
@@ -14,9 +15,12 @@ namespace Hudl.BugBounty.WebApp.DataServices
     {
         private IMongoClient _mongoClient;
         private IMongoDatabase _mongoDatabase;
+        private ILogger<MongoBountyRepository> _logger;
 
-        public MongoBountyRepository(IOptions<DatabaseSettings> settings)
+
+        public MongoBountyRepository(ILogger<MongoBountyRepository> logger, IOptions<DatabaseSettings> settings)
         {
+            _logger = logger;
             _mongoClient = new MongoClient($"mongodb://{settings.Value.Host}:{settings.Value.Port}");
             _mongoDatabase = _mongoClient.GetDatabase(settings.Value.Database);
         }
@@ -112,20 +116,28 @@ namespace Hudl.BugBounty.WebApp.DataServices
                         BsonElement squadName;
                         BsonElement value;
                         BsonElement dateCollected;
-                        BsonElement errorId;
+                        BsonElement key;
+                        BsonElement signature;
                         string squadNameValue = null;
                         double valueValue = 0d;
                         DateTime? dateCollectedDate = null;
-                        string errorIdValue = null;
+                        string signatureValue = null;
+                        string keyValue = null;
                         Hit matchingHit = null;
                         if (document.TryGetElement("squadName", out squadName)) squadNameValue = squadName.Value.AsString;
                         if (document.TryGetElement("value", out value)) valueValue = value.Value.ToInt32();
                         if (document.TryGetElement("dateCollected", out dateCollected)) dateCollectedDate = new DateTime(dateCollected.Value.AsBsonDateTime.MillisecondsSinceEpoch);
-                        if (document.TryGetElement("errorId", out errorId)) {
-                            errorIdValue = errorId.Value.AsString;
-                            hits.TryGetValue(errorIdValue, out matchingHit);
+                        if (document.TryGetElement("key", out key))
+                        {
+                            keyValue = key.Value.AsString;
                         }
-                        bounties.Add(new Bounty() { DateCollected = dateCollectedDate ?? DateTime.MinValue, Value = valueValue, SquadName = squadNameValue, Hit = matchingHit });
+                        if (document.TryGetElement("signature", out signature))
+                        {
+                            signatureValue = signature.Value.AsString;
+                            _logger.LogDebug("Found signature on bounty. BountyId={0} Signature={1}", keyValue ?? "<missing>", signatureValue ?? "<missing>");
+                            hits.TryGetValue(signatureValue, out matchingHit);
+                        }
+                        bounties.Add(new Bounty() { DateCollected = dateCollectedDate ?? DateTime.MinValue, Value = valueValue, SquadName = squadNameValue, Hit = matchingHit, HitId = signatureValue });
                     }
                 }
             }
@@ -134,7 +146,7 @@ namespace Hudl.BugBounty.WebApp.DataServices
 
         public async Task<Hit> GetHit(string signature)
         {
-          // Get a list of the hits
+            // Get a list of the hits
             var errorsCollection = _mongoDatabase.GetCollection<BsonDocument>("errors");
             var filter = Builders<BsonDocument>.Filter.Eq("signature", signature);
             using (var cursor = await errorsCollection.FindAsync(new BsonDocument()))
