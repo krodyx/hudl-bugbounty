@@ -129,7 +129,7 @@ module BountyBoard {
             });
             var assignedValue = model.assigned ? "Assigned" : "Not Assigned";
             return (<div className="bountyboard-item-container">
-                <div className="bountyboard-item position">{model.position + 1}</div>
+                <div className="bountyboard-item position">{model.position}</div>
                 <div className="bountyboard-item signature">{model.signature}</div>
                 <div className="bountyboard-item serviceName">{model.serviceName}</div>
                 <div className="bountyboard-item description">{model.description}</div>
