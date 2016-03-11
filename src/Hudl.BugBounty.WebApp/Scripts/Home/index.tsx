@@ -113,7 +113,6 @@ module Leaderboard {
                         <div className="leaderboard-item-points-container">
                             <h3 className="points">
                                 <span className="pt-value">{this.props.model.timeframePoints}</span>
-                                <span className="pt-change">Change: {this.props.model.daysChange}</span>
                             </h3>
                         </div>
                     </div>
