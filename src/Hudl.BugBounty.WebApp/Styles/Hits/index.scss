@@ -1,0 +1,107 @@
+﻿@import '../main.scss';
+$mobile-break: 450px;
+$rank-color: #108E09;
+$recent-color: #0E4770;
+$headers-height: 40px;
+$header-title-margin: 8px;
+$rank-width: 80px;
+$title-size-break: 950px;
+$hard-break: 800px;
+
+body {
+    background-color: lightblue;
+}
+
+.hitboard-item-assigned {
+    /*background-color: pink;*/
+}
+
+.hitboard-item-unassigned {
+    /*background-color: lightgreen;*/
+}
+
+.hitboard-header-title {
+    margin: auto;
+    text-align: center;
+    display: block;
+    padding: 20px;
+    font-size:24px;
+}
+
+.hitboard-container {
+    max-width: 1000px;
+    margin: auto;
+    width: 90%;
+    background-color: #3c3c3c;
+
+    .headers {
+        @extend .flex-container;
+        margin-top: 0;
+        width: 100%;
+        justify-content: space-between;
+
+        @media screen and (max-width: $mobile-break) {
+            height: $headers-height - 10px;
+        }
+
+        div {
+            @extend .flex-item;
+            flex: 1;
+            height: auto;
+            border: none;
+            text-align: center;
+            font-size: 20px;
+            padding: 10px;
+
+            @media screen and (max-width: $mobile-break) {
+                font-size: 1em;
+                height: $headers-height - 2 * $header-title-margin - 10px;
+            }
+
+            &.rank {
+                background-color: $rank-color;
+
+                @media screen and (max-width: $mobile-break) {
+                    //width: $rank-width - 18px;
+                    font-size: 1em;
+                }
+            }
+
+            &.points {
+                background-color: lighten($bg-color, 20%);
+                color: $font-color;
+
+                @media screen and (max-width: $mobile-break) {
+                    height: $headers-height - 10px;
+                }
+            }
+        }
+    }
+
+    .hitboard-item-container {
+        @extend .flex-container;
+        width: 100%;
+        margin-top: 0;
+        justify-content: space-between;
+        border-top: 3px solid #222;
+        border-bottom: 3px solid #222;
+
+        .hitboard-item {
+            @extend .flex-item;
+            flex: 1;
+            border: none;
+            width: 16px;
+            font-size: 18px;
+            text-align: center;
+            padding: 20px 10px;
+
+            &.position {
+                background-color: #108E09;
+            }
+
+            &.points {
+                background-color: #0E4770;
+            }
+        }
+    }
+}

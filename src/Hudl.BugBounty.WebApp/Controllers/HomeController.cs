@@ -1,13 +1,13 @@
-﻿using System;
-using System.Linq;
+﻿
+// For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+
+using System;
 using System.Threading.Tasks;
 using Hudl.BugBounty.WebApp.DataServices;
 using Hudl.BugBounty.WebApp.Models;
 using Microsoft.AspNet.Mvc;
 using Microsoft.Extensions.Logging;
-using MongoDB.Driver;
-
-// For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+using System.Linq;
 
 namespace Hudl.BugBounty.WebApp.Controllers
 {
@@ -31,6 +31,24 @@ namespace Hudl.BugBounty.WebApp.Controllers
             _logger.LogInformation("Index action started.");
             return View();
         }
+        [HttpGet]
+        public async Task<JsonResult> Leaders()
+        {
+            return Json(await _bountyRepository.GetLeaders());
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> Hits()
+        {
+            return Json(await _bountyRepository.GetHitlist());
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> Hit(string signature)
+        {
+            return Json(await _bountyRepository.GetHit(signature));
+        }
+
 
         [HttpGet]
         public async Task<JsonResult> GetLeaders(DateTime fromDate)
@@ -41,16 +59,16 @@ namespace Hudl.BugBounty.WebApp.Controllers
 
 
             var leaders = (from b in bountiesBySquad
-                          join s in squadData on b.Key equals s.SquadName
-                          select
-                              new Leader()
-                              {
-                                  AllTimeScore = 2000,
-                                  SquadName = s.SquadName,
-                                  SquadImage = s.SquadImage,
-                                  TimeWindowScore = b.Sum(i => i.Value)
-                              }).OrderByDescending(i=>i.TimeWindowScore);
-                           
+                           join s in squadData on b.Key equals s.SquadName
+                           select
+                               new Leader()
+                               {
+                                   AllTimeScore = 2000,
+                                   SquadName = s.SquadName,
+                                   SquadImage = s.SquadImage,
+                                   TimeWindowScore = b.Sum(i => i.Value)
+                               }).OrderByDescending(i => i.TimeWindowScore);
+
             return Json(leaders);
         }
     }
