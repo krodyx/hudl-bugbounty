@@ -133,7 +133,7 @@ namespace Hudl.BugBounty.WebApp.DataServices
                         if (document.TryGetElement("signature", out signature))
                         {
                             signatureValue = signature.Value.AsString;
-                            _logger.LogDebug("Found signature on bounty. BountyId={0} Signature={1}", keyValue ?? "<missing>", signatureValue ?? "<missing>");
+                            _logger.LogDebug("Found signature on bounty. BountyId={0} Signature={1}", keyValue ?? "<>", signatureValue ?? "<>");
                             hits.TryGetValue(signatureValue, out matchingHit);
                         }
                         bounties.Add(new Bounty() { DateCollected = dateCollectedDate ?? DateTime.MinValue, Value = valueValue, SquadName = squadNameValue, Hit = matchingHit, HitId = signatureValue });

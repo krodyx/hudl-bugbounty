@@ -111,7 +111,7 @@ module HitBoard {
         constructor(props: IHitBoardItemProps) {
             super(props);
             var data = props.data;
-            var missing = "<missing>";
+            var missing = "<>";
             var hit = data || {
                 "key": missing,
                 "Service": missing,
